@@ -6,4 +6,4 @@ Front-end feito com ReactJS, back-end feito com Django REST Framework.
 
 APIs utilizadas:
 - VACCOVID: https://rapidapi.com/vaccovidlive-vaccovidlive-default/api/vaccovid-coronavirus-vaccine-and-treatment-tracker
-- Country Lookup: https://rapidapi.com/aoware-aoware-default/api/country-lookup?endpoint=apiendpoint_662f31fe-d8fc-4850-8ec6-a647cf87552f
+- Country Lookup: https://rapidapi.com/aoware-aoware-default/api/country-lookup
