@@ -3,7 +3,7 @@ from django.db import models
 class Country(models.Model):
     name = models.CharField(max_length=50, unique=True)
     flag_url = models.URLField(null=True)
-    rank = models.PositiveSmallIntegerField(unique=True)
+    rank = models.PositiveSmallIntegerField()
     population = models.PositiveIntegerField()
     
     total_cases = models.PositiveIntegerField()
@@ -22,9 +22,9 @@ class Country(models.Model):
     case_fatality_rate = models.FloatField()
     recovery_proportion = models.FloatField()
     
-    total_vaccinated = models.PositiveIntegerField()
-    vaccinated_proportion = models.FloatField()
-    vaccinated_1m_pop = models.PositiveIntegerField()
+    total_vaccinated = models.PositiveIntegerField(null=True)
+    vaccinated_proportion = models.FloatField(null=True)
+    vaccinated_1m_pop = models.PositiveIntegerField(null=True)
     daily_vaccinated_1m_pop = models.PositiveIntegerField(null=True)
     
     def __str__(self):

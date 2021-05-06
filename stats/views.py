@@ -6,30 +6,40 @@ import requests
 from .models import Country
 from .serializers import CountrySerializer
 
+c=0
+
 def getcountryinfo(country):
     url='https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/countries-name-ordered'
     headers = {'x-rapidapi-key': 'be83437380msh3697003aab41f1ap1d95ffjsnad2327d68470','x-rapidapi-host': 'vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com'}
     response = requests.request('GET', url, headers=headers)
-    for dictionary in response.text:
+    for dictionary in response.json():
         if country.capitalize() == dictionary['Country']:
             return dictionary['ThreeLetterSymbol']
 
 def getstats(country=None):
+    global c
     fullstatsurl='https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/'
     vacurl='https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.json'
     headers = {'x-rapidapi-key': 'be83437380msh3697003aab41f1ap1d95ffjsnad2327d68470','x-rapidapi-host': 'vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com'}
-    if not country:
-        response1 = (requests.request('GET', fullstatsurl, headers=headers)).text
-        response2 = (requests.request('GET', vacurl)).text
-        return (response1, response2)
+    if country == None:
+        response1 = (requests.request('GET', fullstatsurl, headers=headers)).json()
+        response2 = (requests.request('GET', vacurl)).json()
+        return response1, response2
     else:
         url=f'https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/country-report-iso-based/{country.capitalize()}/{getcountryinfo(country)}'
-        response1 = (requests.request('GET', url, headers=headers)).text
-        response2 = requests.request('GET', vacurl).json()
+        response1 = (requests.request('GET', url, headers=headers)).json()
+        response2 = (requests.request('GET', vacurl)).json()
+        iso=getcountryinfo(country)
+        if iso=='USA':
+            c+=1
         for d in response2:
-            if d['country'] == country:
-                response2 = d['data'][-1]
-        return (response1, response2)
+            try:
+                if ((d['iso_code']).lower() == iso.lower()) and c==0:
+                    response2 = d['data'][-1]
+                    break
+            except:
+                response2=""
+        return response1, response2
 
 def getflag(country, style='flat', size='16'):
     sizes=['16','24','32','48','64']
@@ -44,33 +54,43 @@ def getflag(country, style='flat', size='16'):
 def initialpopulate():
     fullstats, vacstats = getstats()
     for i in fullstats:
-        new_country=Country()
-        
-        new_country.name=fullstats['Country']
-        new_country.flag_url=getflag(fullstats['Country'])
-        new_country.rank=fullstats['rank']
-        new_country.population=fullstats['Population']
-        
-        new_country.total_cases=fullstats['TotalCases']
-        new_country.new_cases=fullstats['NewCases']
-        new_country.active_cases=fullstats['ActiveCases']
-        new_country.cases_1m_pop=fullstats['TotCases_1M_Pop']
-        
-        new_country.total_deaths=fullstats['TotalDeaths']
-        new_country.new_deaths=fullstats['NewDeaths']
-        new_country.deaths_1m_pop=fullstats['Deaths_1M_Pop']
-        
-        new_country.total_recovered=fullstats['TotalRecovered']
-        new_country.new_recovered=fullstats['NewRecovered']
-        
-        new_country.infection_risk=fullstats['Infection_Risk']
-        new_country.case_fatality_rate=fullstats['Case_Fatality_Rate']
-        new_country.recovery_proportion=fullstats['Recovery_Proportion']
-        
-        new_country.total_vaccinated=vacstats['people_vaccinated']
-        new_country.vaccinated_proportion=vacstats['people_vaccinated']/fullstats['Population']
-        new_country.vaccinated_1m_pop=(vacstats['people_vaccinated']*1000000)/fullstats['Population']
-        new_country.daily_vaccinated_1m_pop=vacstats['daily_vaccinations_per_million']
+        if i['Population']!='0':
+            new_country = Country()
+            
+            new_country.name = i['Country']
+            # new_country.flag_url = getflag(i['Country'])
+            new_country.rank = i['rank']
+            new_country.population = i['Population']
+            
+            new_country.total_cases = i['TotalCases']
+            new_country.new_cases = i['NewCases']
+            new_country.active_cases = i['ActiveCases']
+            new_country.cases_1m_pop = i['TotCases_1M_Pop']
+            
+            new_country.total_deaths = i['TotalDeaths']
+            new_country.new_deaths = i['NewDeaths']
+            new_country.deaths_1m_pop = i['Deaths_1M_pop']
+            
+            new_country.total_recovered = i['TotalRecovered']
+            new_country.new_recovered = i['NewRecovered']
+            
+            new_country.infection_risk = i['Infection_Risk']
+            new_country.case_fatality_rate = i['Case_Fatality_Rate']
+            new_country.recovery_proportion = i['Recovery_Proporation']
+            
+            a, vacstats2 = getstats(i['Country'])
+            try:
+                new_country.total_vaccinated = vacstats2['people_vaccinated']
+                new_country.vaccinated_proportion = vacstats2['people_vaccinated']/int(i['Population'])
+                new_country.vaccinated_1m_pop = (vacstats2['people_vaccinated']*1000000)/int(i['Population'])
+                new_country.daily_vaccinated_1m_pop = vacstats2['daily_vaccinations_per_million']
+            except:
+                new_country.total_vaccinated = 0
+                new_country.vaccinated_proportion = 0
+                new_country.vaccinated_1m_pop = 0
+                new_country.daily_vaccinated_1m_pop = 0
+            
+            new_country.save()
 
 def index(request):
     if request.method == 'GET':
@@ -79,6 +99,8 @@ def index(request):
             return render(request, 'stats/index.html', {'countries': countries})
         except:
             raise Http404
+    elif request.method == 'POST':
+        initialpopulate()
         
 @api_view(['GET', 'POST'])
 def api_country(request, country_id):
