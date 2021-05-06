@@ -41,6 +41,37 @@ def getflag(country, style='flat', size='16'):
     url=f'https://www.countryflags.io/{country_code}/{style}/{size}.png'
     return url
 
+def initialpopulate():
+    fullstats, vacstats = getstats()
+    for i in fullstats:
+        new_country=Country()
+        
+        new_country.name=fullstats['Country']
+        new_country.flag_url=getflag(fullstats['Country'])
+        new_country.rank=fullstats['rank']
+        new_country.population=fullstats['Population']
+        
+        new_country.total_cases=fullstats['TotalCases']
+        new_country.new_cases=fullstats['NewCases']
+        new_country.active_cases=fullstats['ActiveCases']
+        new_country.cases_1m_pop=fullstats['TotCases_1M_Pop']
+        
+        new_country.total_deaths=fullstats['TotalDeaths']
+        new_country.new_deaths=fullstats['NewDeaths']
+        new_country.deaths_1m_pop=fullstats['Deaths_1M_Pop']
+        
+        new_country.total_recovered=fullstats['TotalRecovered']
+        new_country.new_recovered=fullstats['NewRecovered']
+        
+        new_country.infection_risk=fullstats['Infection_Risk']
+        new_country.case_fatality_rate=fullstats['Case_Fatality_Rate']
+        new_country.recovery_proportion=fullstats['Recovery_Proportion']
+        
+        new_country.total_vaccinated=vacstats['people_vaccinated']
+        new_country.vaccinated_proportion=vacstats['people_vaccinated']/fullstats['Population']
+        new_country.vaccinated_1m_pop=(vacstats['people_vaccinated']*1000000)/fullstats['Population']
+        new_country.daily_vaccinated_1m_pop=vacstats['daily_vaccinations_per_million']
+
 def index(request):
     if request.method == 'GET':
         try:

@@ -19,7 +19,7 @@
   <tbody>
   {% for country in countries %}
   <tr>
-    <td>{{country.name}}</td>
+    <td><img src="{{country.flag_url}}" class="logo" />{{country.name}}</td>
     <td>{{country.rank}}</td>
     <td>{{country.population}}</td>
 

@@ -1,9 +1,9 @@
 from django.db import models
 
 class Country(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     flag_url = models.URLField(null=True)
-    rank = models.PositiveSmallIntegerField()
+    rank = models.PositiveSmallIntegerField(unique=True)
     population = models.PositiveIntegerField()
     
     total_cases = models.PositiveIntegerField()
