@@ -2,6 +2,7 @@ from django.db import models
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
+    flag_url = models.URLField(null=True)
     rank = models.PositiveSmallIntegerField()
     population = models.PositiveIntegerField()
     
@@ -24,6 +25,15 @@ class Country(models.Model):
     total_vaccinated = models.PositiveIntegerField()
     vaccinated_proportion = models.FloatField()
     vaccinated_1m_pop = models.PositiveIntegerField()
+    daily_vaccinated_1m_pop = models.PositiveIntegerField(null=True)
     
     def __str__(self):
-        return f'{self.id}. {self.name}'
+        return f'{self.id}.{self.name}'
+    
+class Subscriber(models.Model):
+    name = models.CharField(max_length=50, blank=True, default='')
+    email = models.EmailField()
+    specific_country = models.CharField(max_length=50, blank=True, default='')
+    all_countries = models.BooleanField()
+    interval = models.PositiveSmallIntegerField()
+    
