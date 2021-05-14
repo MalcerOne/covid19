@@ -19,6 +19,7 @@ from stats import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('country/<str:country_name>', views.country_view, name='country'),
     path('admin/', admin.site.urls),
     path('api/countries/<int:country_id>/', views.api_country),
 ]

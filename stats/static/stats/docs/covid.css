@@ -25,13 +25,14 @@ body {
 .styled-table thead tr {
     background-color: #002a43;
     color: #ffffff;
-    text-align: left;
+    text-align: center;
 }
 
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
 }
+
 
 .styled-table tbody tr {
     border-bottom: thin solid #dddddd;
@@ -48,4 +49,119 @@ body {
 .styled-table tbody tr.active-row {
     font-weight: bold;
     color: #ed1019;
+}
+
+.logo{
+    margin-right: 0.25em;
+}
+
+.texto-bandeira{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.country-specific{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .styled-table-country {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    font-family: 'Barlow', sans-serif;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.styled-tbody {
+display: flex;
+width: 800px;
+position: relative;
+align-items: stretch;
+border: 1px solid black;
+
+}
+.styled-tr {
+flex-basis: 33.33333333%;
+display: flex;
+flex-wrap: wrap;
+align-content: flex-start;
+padding: 5px 10px;
+}
+
+/* .styled-tr + .styled-tr {
+border-center: 1px solid black;
+} */
+
+.styled-th, .styled-td {
+flex-basis: 100%;
+text-align: center;
+display: flex;
+padding: 2px;
+}
+
+.styled-th {
+font-weight: bold;
+}
+
+.styled-table .styled-thead .styled-tr {
+    background-color: #002a43;
+    color: #ffffff;
+    text-align: center;
+}
+
+.styled-table .styled-th,
+.styled-table .styled-td {
+    padding: 12px 15px;
+}
+
+.styled-table .styled-tbody .styled-tr {
+    border-bottom: thin solid #dddddd;
+}
+
+.styled-table .styled-tbody .styled-tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table .styled-tbody .styled-tr:last-of-type {
+    border-bottom: 2px solid #ed1019;
+}
+
+.styled-table .styled-tbody .styled-tr.active-row {
+    font-weight: bold;
+    color: #ed1019;
+}
+
+#myBtn {
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 35px;
+  right: 400px;
+  border: none;
+  outline: none;
+  background-color: #ed1019;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 100%;
+  font-size: 8px;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+}
+
+#myBtn:hover {
+  background-color: #910b0f; /* Add a dark-grey background on hover */
 }

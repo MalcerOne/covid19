@@ -19,7 +19,7 @@
   <tbody>
   {% for country in countries %}
   <tr>
-    <td><img src="{{country.flag_url}}" class="logo" />{{country.name}}</td>
+    <td name={{country.name}} class='texto-bandeira' href><img src="{{country.flag_url}}" class="logo" /><a href="/country/{{country.name}}">{{country.name_pt}}</td>
     <td>{{country.rank}}</td>
     <td>{{country.population}}</td>
 
@@ -32,11 +32,6 @@
   </tbody>
 </table>
 
-<form method="post" class="form-memo">
-  {% csrf_token %}
-  {% comment %} <label for="content">Conteúdo</label> {% endcomment %}
-  <textarea id="content" name="content" class="form-text"></textarea>
-  <input type="submit" class="form-btn"/>
-</form>
+<button onclick="topFunction()" id="myBtn" title="Go to top">⇑</button> 
 
 {% endblock %}

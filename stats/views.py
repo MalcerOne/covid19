@@ -5,6 +5,7 @@ from django.http import Http404
 import requests
 from .models import Country
 from .serializers import CountrySerializer
+from deep_translator import GoogleTranslator
 
 c=0
 
@@ -44,10 +45,22 @@ def getstats(country=None):
 def getflag(country, style='flat', size='16'):
     sizes=['16','24','32','48','64']
     styles=['flat','shiny']
-    codes={}
+    
+    urlcode = "https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/countries"
+
+    headers = {
+    'x-rapidapi-key': "be83437380msh3697003aab41f1ap1d95ffjsnad2327d68470",
+    'x-rapidapi-host': "vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", urlcode, headers=headers)
+
+    for d in response.json():
+        if d['Country']==country.title() or d['Country']==country.upper() or d['Country']==country:
+            country_code=d['TwoLetterSymbol'].upper()
+            break
     if (size not in sizes) or (style not in styles):
         raise ValueError('Argumento inválido.')
-    country_code=codes[country]
     url=f'https://www.countryflags.io/{country_code}/{style}/{size}.png'
     return url
 
@@ -58,7 +71,7 @@ def initialpopulate():
             new_country = Country()
             
             new_country.name = i['Country']
-            # new_country.flag_url = getflag(i['Country'])
+            new_country.flag_url = getflag(i['Country'])
             new_country.rank = i['rank']
             new_country.population = i['Population']
             
@@ -100,7 +113,18 @@ def index(request):
         except:
             raise Http404
     elif request.method == 'POST':
-        initialpopulate()
+        for country in Country.objects.all():
+            if country.name != 'Turkey':
+                text=str(country.name)
+                translated = GoogleTranslator(source='auto', target='pt').translate(text)
+                country.name_pt=translated
+            else:
+                country.name_pt='Turquia'
+            country.save()
+        
+def country_view(request, country_name):
+    country=Country.objects.get(name=country_name)
+    return render(request, 'stats/country.html', {'country': country})
         
 @api_view(['GET', 'POST'])
 def api_country(request, country_id):
