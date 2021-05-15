@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import Http404
+from django.core.mail import send_mail, send_mass_mail
 import requests
 from .models import Country
 from .serializers import CountrySerializer
@@ -72,6 +73,8 @@ def initialpopulate():
             
             new_country.name = i['Country']
             new_country.flag_url = getflag(i['Country'])
+            new_country.flag_url_shiny = getflag(i['Country'], style='shiny')
+            new_country.flag_url_big = getflag(i['Country'], size='64')
             new_country.rank = i['rank']
             new_country.population = i['Population']
             
@@ -125,6 +128,13 @@ def index(request):
 def country_view(request, country_name):
     country=Country.objects.get(name=country_name)
     return render(request, 'stats/country.html', {'country': country})
+
+def about(request):
+    return render(request, 'stats/about.html')
+
+def subscribe(request):
+    countries=Country.objects.all()
+    return render(request, 'stats/subscribe.html', {'countries': countries})
         
 @api_view(['GET', 'POST'])
 def api_country(request, country_id):

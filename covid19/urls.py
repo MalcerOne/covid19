@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.shortcuts import render
 from stats import views
 
 urlpatterns = [
@@ -22,4 +23,12 @@ urlpatterns = [
     path('country/<str:country_name>', views.country_view, name='country'),
     path('admin/', admin.site.urls),
     path('api/countries/<int:country_id>/', views.api_country),
+    path('api/sortby<int:country_id>/', views.api_country),
+    path('subscribe/', views.subscribe),
+    path('about/', views.about),
 ]
+
+def notfound(request, exception=None):
+    return render(request, 'stats/templates/stats/404.html')
+
+handler404 = notfound

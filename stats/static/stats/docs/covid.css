@@ -4,6 +4,7 @@ body {
 }
 
 .main-container{
+    margin-top: 60px;
     display: flex;
     flex-direction: column;
 	justify-content: space-evenly;
@@ -13,7 +14,7 @@ body {
 
 .styled-table {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 15px 0;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
@@ -36,6 +37,11 @@ body {
 
 .styled-table tbody tr {
     border-bottom: thin solid #dddddd;
+    transition: all ease-in-out 200ms;
+    -webkit-transition: all ease-in-out 200ms;
+    -moz-transition: all ease-in-out 200ms;
+    -ms-transition: all ease-in-out 200ms;
+    -o-transition: all ease-in-out 200ms;
 }
 
 .styled-table tbody tr:nth-of-type(even) {
@@ -49,6 +55,11 @@ body {
 .styled-table tbody tr.active-row {
     font-weight: bold;
     color: #ed1019;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #90bad2;
+    font-weight: bold;
 }
 
 .logo{
@@ -67,6 +78,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.bottom{
+    margin-bottom: 25px;
 }
 
 /* .styled-table-country {
@@ -146,7 +161,7 @@ font-weight: bold;
   align-items: center;
   justify-content: center;
   position: fixed;
-  bottom: 35px;
+  bottom: 125px;
   right: 400px;
   border: none;
   outline: none;
@@ -164,4 +179,145 @@ font-weight: bold;
 
 #myBtn:hover {
   background-color: #910b0f; /* Add a dark-grey background on hover */
+}
+
+.icon-bar {
+position: fixed;
+width: 90px; /* Set a specific width */
+background-color: #555; /* Dark-grey background */
+left: 400px;
+}
+
+.icon-bar a {
+display: block; /* Make the links appear below each other instead of side-by-side */
+text-align: center; /* Center-align text */
+padding: 16px; /* Add some padding */
+transition: all 0.3s ease; /* Add transition for hover effects */
+color: white; /* White text color */
+font-size: 36px; /* Increased font-size */
+}
+
+.icon-bar a:hover {
+background-color: #000; /* Add a hover color */
+}
+
+.active {
+background-color: #04AA6D; /* Add an active/current color */
+}
+
+ /* The navigation bar */
+.navbar {
+    display: flex;
+    overflow: hidden;
+    background-color: #002a43;
+    position: fixed;
+    /*Setthenavbartofixedposition*/top: 0;
+    /*Positionthenavbaratthetopofthepage*/width: 100%;
+    /*Fullwidth*/margin-bottom: 25px;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+/* Links inside the navbar */
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: all ease-in-out 250ms;
+    -webkit-transition: all ease-in-out 250ms;
+    -moz-transition: all ease-in-out 250ms;
+    -ms-transition: all ease-in-out 250ms;
+    -o-transition: all ease-in-out 250ms;
+}
+
+/* Change background on mouse-over */
+.navbar a:hover {
+background: #90bad2;
+color: #000e17;
+}
+
+/* Main content */
+.main {
+margin-top: 30px; /* Add a top margin to avoid content overlay */
+} 
+
+.end-logo{
+    max-width: 2%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.a:visited{
+color:blue;
+}
+
+ /* Style the form element with a border around it */
+ form {
+border: 4px solid #f1f1f1;
+margin-bottom: 25px;
+}
+
+/* Add some padding and a grey background color to containers */
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f1f1f1;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+/* Style the input elements and the submit button */
+input[type=text], input[type=submit] {
+width: 100%;
+padding: 12px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+box-sizing: border-box;
+font-family: 'Barlow', sans-serif;
+text-align: center;
+}
+
+/* Add margins to the checkbox */
+input[type=checkbox] {
+margin-top: 16px;
+}
+
+/* Style the submit button */
+input[type=submit] {
+     background-color: #002a43;
+     color: white;
+     border: none;
+     font-family: 'Barlow', sans-serif;
+     transition: all ease-in-out 100ms;
+     -webkit-transition: all ease-in-out 100ms;
+     -moz-transition: all ease-in-out 100ms;
+     -ms-transition: all ease-in-out 100ms;
+     -o-transition: all ease-in-out 100ms;
+}
+
+input[type=submit]:hover {
+opacity: 0.8;
+}
+
+input[type=date] {
+    font-family: 'Barlow', sans-serif;
+}
+
+select{
+    font-family: 'Barlow', sans-serif;
+}
+
+.form{
+    /* display: flex;
+    flex-direction: column; */
+    align-items: center;
+    align-content: center;
+    justify-content: center;
 }

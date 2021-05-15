@@ -4,7 +4,9 @@ class Country(models.Model):
     name = models.CharField(max_length=50, unique=True)
     name_pt = models.CharField(max_length=50, unique=True, null=True)
     flag_url = models.URLField(null=True)
+    flag_url_shiny = models.URLField(null=True)
     flag_url_big = models.URLField(null=True)
+    flag_url_big_shiny = models.URLField(null=True)
     rank = models.PositiveSmallIntegerField()
     population = models.PositiveIntegerField()
     

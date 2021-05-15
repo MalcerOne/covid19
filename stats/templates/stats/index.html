@@ -3,6 +3,14 @@
 {% block content %}
 <p>Estatísticas sobre o COVID-19 atualizadas frequentemente</p>
 
+{% comment %} <div class="icon-bar">
+  <a class="active" href="#"><i class="fa fa-home"></i></a>
+  <a href="#"><i class="fa fa-search"></i></a>
+  <a href="#"><i class="fa fa-envelope"></i></a>
+  <a href="#"><i class="fa fa-globe"></i></a>
+  <a href="#"><i class="fa fa-trash"></i></a>
+</div> {% endcomment %}
+
 <table class="styled-table">
 <thead>
   <tr>
@@ -19,7 +27,7 @@
   <tbody>
   {% for country in countries %}
   <tr>
-    <td name={{country.name}} class='texto-bandeira' href><img src="{{country.flag_url}}" class="logo" /><a href="/country/{{country.name}}">{{country.name_pt}}</td>
+    <td name={{country.name}} class='texto-bandeira' onmouseover="hover" onmouseout="unhover"><img src="{{country.flag_url}}" class="logo" /"><a href="/country/{{country.name}}" class="a">{{country.name_pt}}</td>
     <td>{{country.rank}}</td>
     <td>{{country.population}}</td>
 
@@ -32,6 +40,6 @@
   </tbody>
 </table>
 
-<button onclick="topFunction()" id="myBtn" title="Go to top">⇑</button> 
+<button onclick="topFunction()" id="myBtn" title="Go to top">⇑</button>
 
 {% endblock %}

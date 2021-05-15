@@ -17,3 +17,13 @@ function topFunction() {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 } 
+
+function hover(element, link) {
+  const country_code = link.split("/")[3];
+  element.children('.logo').setAttribute('src', `https://www.countryflags.io/${country_code}/shiny/16.png`);
+}
+
+function unhover(element, link) {
+  const country_code = link.split("/")[3];
+  element.children('.logo').setAttribute('src', `https://www.countryflags.io/${country_code}/flat/16.png`);
+}
