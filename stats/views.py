@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import Http404
 from django.core.mail import send_mail, send_mass_mail
-import requests
-from .models import Country
+import requests, datetime
+from .models import Country, LastModified
 from .serializers import CountrySerializer
 from deep_translator import GoogleTranslator
 
@@ -111,8 +111,10 @@ def initialpopulate():
 def index(request):
     if request.method == 'GET':
         try:
+            LastModified().save()
             countries=Country.objects.all()
-            return render(request, 'stats/index.html', {'countries': countries})
+            editado=LastModified.objects.last()
+            return render(request, 'stats/index.html', {'countries': countries, 'LastModified': editado})
         except:
             raise Http404
     elif request.method == 'POST':

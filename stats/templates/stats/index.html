@@ -1,7 +1,8 @@
 {% extends "stats/base.html" %}
 
 {% block content %}
-<p>Estatísticas sobre o COVID-19 atualizadas frequentemente</p>
+{% comment %} <p>Estatísticas sobre o COVID-19 atualizadas frequentemente</p> {% endcomment %}
+<p>Estatísticas atualizadas em: {{editado.last_modified}}</p>
 
 {% comment %} <div class="icon-bar">
   <a class="active" href="#"><i class="fa fa-home"></i></a>

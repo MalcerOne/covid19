@@ -41,3 +41,5 @@ class Subscriber(models.Model):
     all_countries = models.BooleanField()
     interval = models.PositiveSmallIntegerField()
     
+class LastModified(models.Model):
+    last_modified = models.DateTimeField(auto_now=True)
