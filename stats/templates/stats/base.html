@@ -16,11 +16,11 @@
     <a href="/">Home</a>
     <a href="/subscribe">Se inscreva</a>
     <a href="/about">Estatísticas</a>
-    <a href="https://github.com/gtkacz/covid19" target="_blank">Código fonte</a>
+    <a href="https://github.com/gtkacz/covid19" target="_blank" id="src">Código fonte</a>
   </div>
-    <body class="main-container">
-      {% block content %} {% endblock %}
-      <img src="{% static 'stats/img/logo.png' %}" class="end-logo">
-      <div class="bottom"><span>CoronaStats.info© is licensed under the MIT License</span></div>
-    </body>
+  <body class="main-container">
+    {% block content %} {% endblock %}
+    <img src="{% static 'stats/img/logo.png' %}" class="end-logo">
+    <div class="bottom"><span>CoronaStats.info© is licensed under the MIT License</span></div>
+  </body>
 </html>

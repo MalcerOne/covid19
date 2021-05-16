@@ -111,10 +111,9 @@ def initialpopulate():
 def index(request):
     if request.method == 'GET':
         try:
-            LastModified().save()
             countries=Country.objects.all()
             editado=LastModified.objects.last()
-            return render(request, 'stats/index.html', {'countries': countries, 'LastModified': editado})
+            return render(request, 'stats/index.html', {'countries': countries, 'LastModified': str(editado)})
         except:
             raise Http404
     elif request.method == 'POST':
