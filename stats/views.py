@@ -136,6 +136,11 @@ def about(request):
 def subscribe(request):
     countries=Country.objects.all()
     return render(request, 'stats/subscribe.html', {'countries': countries})
+
+def sortby(request, sortvalue):
+    countries=Country.objects.all().order_by(sortvalue)
+    editado=LastModified.objects.last()
+    return render(request, 'stats/index.html', {'countries': countries, 'LastModified': str(editado)})
         
 @api_view(['GET', 'POST'])
 def api_country(request, country_id):

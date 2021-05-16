@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/sortby<int:country_id>/', views.api_country),
     path('subscribe/', views.subscribe),
     path('about/', views.about),
+    path('sortby=<str:sortvalue>/', views.sortby),
 ]
 
 def notfound(request, exception=None):

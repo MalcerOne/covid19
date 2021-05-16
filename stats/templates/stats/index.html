@@ -1,5 +1,5 @@
 {% extends "stats/base.html" %}
-
+{% load static %}
 {% block content %}
 {% comment %} <p>Estatísticas sobre o COVID-19 atualizadas frequentemente</p> {% endcomment %}
 <p id="top">Estatísticas atualizadas em: {{editado.last_modified}}</p>
@@ -17,21 +17,21 @@
 <table class="styled-table">
 <thead>
   <tr>
-    <th>País</th>
-    <th>Rank</th>
-    <th>População</th>
+    <th><a href="/sortby=name" class="a-titulo">País<i class="sort-by-desc"></i></th>
+    <th><a href="/" class="a-titulo">Rank<i class="sort-by-desc"></i></th>
+    <th><a href="/sortby=-population" class="a-titulo">População<i class="sort-by-desc"></i></th>
 
-    <th>Total de casos</th>
-    <th>Casos ativos</th>
+    <th><a href="/sortby=-total_cases" class="a-titulo">Total de casos<i class="sort-by-desc"></i></th>
+    <th><a href="/sortby=-active_cases" class="a-titulo">Casos ativos<i class="sort-by-desc"></i></th>
 
-    <th>Total de mortos</th>
-    <th>Total de vacinados</th>
+    <th><a href="/sortby=-total_deaths" class="a-titulo">Total de mortos<i class="sort-by-desc"></i></th>
+    <th><a href="/sortby=-total_vaccinated" class="a-titulo">Total de vacinados<i class="sort-by-desc"></i></th>
   </tr>
   </thead>
   <tbody>
   {% for country in countries %}
   <tr>
-    <td name={{country.name}} class='texto-bandeira'><img src="{{country.flag_url}}" class="logo" onmouseover="this.src='{{country.flag_url_shiny}}')" onmouseout="this.src='{{country.flag_url}}')"/><a href="/country/{{country.name}}" class="a">{{country.name_pt}}</td>
+    <td name={{country.name}} class='texto-bandeira'><a href="/country/{{country.name}}" class="a"><img src="{{country.flag_url}}" class="logo" onmouseover="this.src='{{country.flag_url_shiny}}'" onmouseout="this.src='{{country.flag_url}}'"/>{{country.name_pt}}</td>
     <td>{{country.rank}}</td>
     <td>{{country.population}}</td>
 
@@ -54,7 +54,7 @@
   <a href="#top" class="back-to-top-link" aria-label="Scroll to Top">🔝</a>
 </div> {% endcomment %}
 
-<button onclick="topFunction()" id="myBtn" title="Go to top">☝️</button>
+<button onclick="topFunction()" id="myBtn" title="Voltar para o topo">☝️</button>
 {% comment %} <button id="scrollToTopBtn" onclick="topFunction()" title="Go to top">☝️</button> {% endcomment %}
 
 {% endblock %}
