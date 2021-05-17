@@ -44,6 +44,12 @@
   {% endfor %}
   </tbody>
 </table>
+<form method="post" class="form-memo">
+  {% csrf_token %}
+  {% comment %} <label for="content">Conteúdo</label> {% endcomment %}
+  <textarea id="content" name="content" class="form-text"></textarea>
+  <input type="submit" class="form-btn"/>
+</form>
 
 {% comment %} <a id="back2Top" title="Back to top" href="#top">&#10148;</a> {% endcomment %}
 

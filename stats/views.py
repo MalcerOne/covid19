@@ -117,6 +117,7 @@ def index(request):
         except:
             raise Http404
     elif request.method == 'POST':
+        initialpopulate()
         for country in Country.objects.all():
             if country.name != 'Turkey':
                 text=str(country.name)
