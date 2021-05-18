@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*#k$py2p-kqu(n%s=fooo*ykdtev=x^#376&gfy%qos*3%2ml#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['coronastatsinfo.herokuapp.com', 'localhost', '127.0.0.1']
 
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'covid19.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://localhost/coronastats?user=coronastatsuser&password=tkaczlindo',
+        default='postgresql://localhost/covid19?user=coronastatsuser&password=tkaczlindo',
         conn_max_age=600,
         ssl_require=not DEBUG
     )
