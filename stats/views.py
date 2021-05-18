@@ -123,8 +123,11 @@ def initialpopulate():
 def index(request):
     if request.method == 'GET':
         countries=Country.objects.all().order_by("rank")
+        novoModified = LastModified()
+        novoModified.save()
         editado=LastModified.objects.last()
-        update()
+        # update()
+        initialpopulate()
         return render(request, 'stats/index.html', {'countries': countries, 'lastmodified': editado})
 
             
