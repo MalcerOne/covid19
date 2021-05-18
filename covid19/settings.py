@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'covid19.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://localhost/covid19?user=admin&password=12345',
+        default='postgresql://localhost/coronastats?user=coronastatsuser&password=tkaczlindo',
         conn_max_age=600,
         ssl_require=not DEBUG
     )
