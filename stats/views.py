@@ -122,13 +122,11 @@ def initialpopulate():
 
 def index(request):
     if request.method == 'GET':
-        try:
-            countries=Country.objects.all().order_by("rank")
-            editado=LastModified.objects.last()
-            update()
-            return render(request, 'stats/index.html', {'countries': countries, 'lastmodified': editado})
-        except:
-            raise Http404
+        countries=Country.objects.all().order_by("rank")
+        editado=LastModified.objects.last()
+        update()
+        return render(request, 'stats/index.html', {'countries': countries, 'lastmodified': editado})
+
             
 def country_view(request, country_name):
     country=Country.objects.get(name=country_name)
