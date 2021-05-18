@@ -71,6 +71,7 @@ def getflag(country, style='flat', size='16'):
 
 def initialpopulate():
     fullstats, vacstats = getstats()
+    new_modified=LastModified().save()
     for i in fullstats:
         if i['Population']!='0':
             new_country = Country()
@@ -123,11 +124,9 @@ def initialpopulate():
 def index(request):
     if request.method == 'GET':
         countries=Country.objects.all().order_by("rank")
-        novoModified = LastModified()
-        novoModified.save()
         editado=LastModified.objects.last()
+        initialpopulate() # se o site nao estiver no Heroku, execute o initialpopulate() a primeira vez que usar o site, e o update() as outras vezes
         # update()
-        initialpopulate()
         return render(request, 'stats/index.html', {'countries': countries, 'lastmodified': editado})
 
             
