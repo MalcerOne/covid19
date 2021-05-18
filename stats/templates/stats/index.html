@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 {% comment %} <p>Estatísticas sobre o COVID-19 atualizadas frequentemente</p> {% endcomment %}
-<p id="top">Estatísticas atualizadas em: {{editado.last_modified}}</p>
+<p id="top" class="top">Estatísticas atualizadas em:<br>{{lastmodified.last_modified_data}}</p>
 
 {% comment %} <div class="icon-bar">
   <a class="active" href="#"><i class="fa fa-home"></i></a>
@@ -31,7 +31,7 @@
   <tbody>
   {% for country in countries %}
   <tr>
-    <td name={{country.name}} class='texto-bandeira'><a href="/country/{{country.name}}" class="a"><img src="{{country.flag_url}}" class="logo" onmouseover="this.src='{{country.flag_url_shiny}}'" onmouseout="this.src='{{country.flag_url}}'"/>{{country.name_pt}}</td>
+    <td name={{country.name}} class='texto-bandeira'><a href="/country/{{country.name}}" class="a"><img src="{{country.flag_url}}" class="logo"/>{{country.name_pt}}</td>
     <td>{{country.rank}}</td>
     <td>{{country.population}}</td>
 
@@ -44,12 +44,6 @@
   {% endfor %}
   </tbody>
 </table>
-<form method="post" class="form-memo">
-  {% csrf_token %}
-  {% comment %} <label for="content">Conteúdo</label> {% endcomment %}
-  <textarea id="content" name="content" class="form-text"></textarea>
-  <input type="submit" class="form-btn"/>
-</form>
 
 {% comment %} <a id="back2Top" title="Back to top" href="#top">&#10148;</a> {% endcomment %}
 

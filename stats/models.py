@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
+from datetime import date
+from time import time
+
 
 class Country(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -43,4 +46,4 @@ class Subscriber(models.Model):
     interval = models.PositiveSmallIntegerField()
     
 class LastModified(models.Model):
-    last_modified = models.DateTimeField(auto_now=True)
+    last_modified_data = models.CharField(max_length=20, default=date.today())

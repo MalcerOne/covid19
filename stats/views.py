@@ -7,19 +7,22 @@ import requests, datetime
 from .models import Country, LastModified
 from .serializers import CountrySerializer
 from deep_translator import GoogleTranslator
+from datetime import date
 
 c=0
+statsUsa = []
 
 def getcountryinfo(country):
     url='https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/countries-name-ordered'
     headers = {'x-rapidapi-key': 'be83437380msh3697003aab41f1ap1d95ffjsnad2327d68470','x-rapidapi-host': 'vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com'}
     response = requests.request('GET', url, headers=headers)
     for dictionary in response.json():
-        if country.capitalize() == dictionary['Country']:
+        if country.upper() == dictionary['Country'].upper():
             return dictionary['ThreeLetterSymbol']
 
 def getstats(country=None):
-    global c
+    global c, statsUsa
+    
     fullstatsurl='https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/'
     vacurl='https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.json'
     headers = {'x-rapidapi-key': 'be83437380msh3697003aab41f1ap1d95ffjsnad2327d68470','x-rapidapi-host': 'vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com'}
@@ -32,8 +35,9 @@ def getstats(country=None):
         response1 = (requests.request('GET', url, headers=headers)).json()
         response2 = (requests.request('GET', vacurl)).json()
         iso=getcountryinfo(country)
-        if iso=='USA':
+        if iso=='USA' or iso=='US':
             c+=1
+            iso = country
         for d in response2:
             try:
                 if ((d['iso_code']).lower() == iso.lower()) and c==0:
@@ -75,6 +79,7 @@ def initialpopulate():
             new_country.flag_url = getflag(i['Country'])
             new_country.flag_url_shiny = getflag(i['Country'], style='shiny')
             new_country.flag_url_big = getflag(i['Country'], size='64')
+            new_country.flag_url_big_shiny = getflag(i['Country'], size='64', style='shiny')
             new_country.rank = i['rank']
             new_country.population = i['Population']
             
@@ -105,28 +110,26 @@ def initialpopulate():
                 new_country.vaccinated_proportion = 0
                 new_country.vaccinated_1m_pop = 0
                 new_country.daily_vaccinated_1m_pop = 0
-            
+
+            if new_country.name != 'Turkey':
+                text=str(new_country.name)
+                translated = GoogleTranslator(source='auto', target='pt').translate(text)
+                new_country.name_pt=translated
+            else:
+                new_country.name_pt='Turquia'
+
             new_country.save()
 
 def index(request):
     if request.method == 'GET':
         try:
-            countries=Country.objects.all()
+            countries=Country.objects.all().order_by("rank")
             editado=LastModified.objects.last()
-            return render(request, 'stats/index.html', {'countries': countries, 'LastModified': str(editado)})
+            update()
+            return render(request, 'stats/index.html', {'countries': countries, 'lastmodified': editado})
         except:
             raise Http404
-    elif request.method == 'POST':
-        initialpopulate()
-        for country in Country.objects.all():
-            if country.name != 'Turkey':
-                text=str(country.name)
-                translated = GoogleTranslator(source='auto', target='pt').translate(text)
-                country.name_pt=translated
-            else:
-                country.name_pt='Turquia'
-            country.save()
-        
+            
 def country_view(request, country_name):
     country=Country.objects.get(name=country_name)
     return render(request, 'stats/country.html', {'country': country})
@@ -151,3 +154,48 @@ def api_country(request, country_id):
         raise Http404()
     serialized_country = CountrySerializer(country)
     return Response(serialized_country.data)
+
+def update():
+    tempo = LastModified.objects.last()
+    print(str(tempo.last_modified_data) == str(date.today()))
+    if str(tempo.last_modified_data) != str(date.today()):
+        fullstats, vacstats = getstats()
+        newModified = LastModified()
+        newModified.save()
+        for i in fullstats:
+            if i['Population']!='0':
+                country = Country.objects.get(name = i["Country"])
+                country.rank = i['rank']
+                country.population = i['Population']
+                
+                country.total_cases = i['TotalCases']
+                country.new_cases = i['NewCases']
+                country.active_cases = i['ActiveCases']
+                country.cases_1m_pop = i['TotCases_1M_Pop']
+                
+                country.total_deaths = i['TotalDeaths']
+                country.new_deaths = i['NewDeaths']
+                country.deaths_1m_pop = i['Deaths_1M_pop']
+                
+                country.total_recovered = i['TotalRecovered']
+                country.new_recovered = i['NewRecovered']
+                
+                country.infection_risk = i['Infection_Risk']
+                country.case_fatality_rate = i['Case_Fatality_Rate']
+                country.recovery_proportion = i['Recovery_Proporation']
+                
+                a, vacstats2 = getstats(i['Country'])
+                try:
+                    country.total_vaccinated = vacstats2['people_vaccinated']
+                    country.vaccinated_proportion = vacstats2['people_vaccinated']/int(i['Population'])
+                    country.vaccinated_1m_pop = (vacstats2['people_vaccinated']*1000000)/int(i['Population'])
+                    country.daily_vaccinated_1m_pop = vacstats2['daily_vaccinations_per_million']
+                except:
+                    country.total_vaccinated = 0
+                    country.vaccinated_proportion = 0
+                    country.vaccinated_1m_pop = 0
+                    country.daily_vaccinated_1m_pop = 0
+
+                country.save()
+        
+    
