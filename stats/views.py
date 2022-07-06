@@ -125,8 +125,8 @@ def index(request):
     if request.method == 'GET':
         countries=Country.objects.all().order_by("rank")
         editado=LastModified.objects.last()
-        initialpopulate() # se o site nao estiver no Heroku, execute o initialpopulate() a primeira vez que usar o site, e o update() as outras vezes
-        # update()
+        # initialpopulate() # se o site nao estiver no Heroku, execute o initialpopulate() a primeira vez que usar o site, e o update() as outras vezes
+        update()
         return render(request, 'stats/index.html', {'countries': countries, 'lastmodified': editado})
 
             
